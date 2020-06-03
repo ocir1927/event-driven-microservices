@@ -29,6 +29,6 @@ public class AccountCommandService {
     }
 
     public CompletableFuture<String> debitMoneyFromAccount(String accountNumber, MoneyDebitDTO moneyDebitDTO) {
-        return commandGateway.send(new DebitAccountCommand(accountNumber, moneyDebitDTO.getDebitAmount(), moneyDebitDTO.getCurrency()));
+        return commandGateway.send(new DebitAccountCommand(accountNumber, moneyDebitDTO.getDebitAmount(),UUID.randomUUID().toString(), moneyDebitDTO.getCurrency()));
     }
 }

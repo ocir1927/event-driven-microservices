@@ -14,6 +14,8 @@ import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Aggregate
 public class AccountAggregate {
@@ -29,11 +31,15 @@ public class AccountAggregate {
 
     private String owner;
 
+    private final Logger LOG = LoggerFactory.getLogger(AccountAggregate.class);
+
     public AccountAggregate() {
     }
 
     @CommandHandler
     public AccountAggregate(CreateAccountCommand createAccountCommand){
+        LOG.debug("Create account command");
+
         AggregateLifecycle.apply(new AccountCreatedEvent(createAccountCommand.id, createAccountCommand.accountBalance, createAccountCommand.currency,createAccountCommand.owner));
     }
 
@@ -44,12 +50,9 @@ public class AccountAggregate {
         this.accountBalance = accountCreatedEvent.accountBalance;
         this.currency = accountCreatedEvent.currency;
         this.status = String.valueOf(Status.CREATED);
-//        AggregateLifecycle.apply(new AccountActivatedEvent(this.id, Status.ACTIVATED));
     }
-//    @EventSourcingHandler
-//    protected void on(AccountActivatedEvent accountActivatedEvent){
-//        this.status = String.valueOf(accountActivatedEvent.status);
-//    }
+
+
     @CommandHandler
     protected void on(CreditAccountCommand creditAccountCommand){
         AggregateLifecycle.apply(new AccountCreditedEvent(creditAccountCommand.id, creditAccountCommand.creditAmount, creditAccountCommand.currency));
@@ -62,18 +65,16 @@ public class AccountAggregate {
 
     @CommandHandler
     protected void on(DebitAccountCommand debitMoneyCommand){
-        AggregateLifecycle.apply(new DebitAccountCommand(debitMoneyCommand.id, debitMoneyCommand.debitAmount, debitMoneyCommand.currency));
+        if (this.accountBalance >= 0 & (this.accountBalance - debitMoneyCommand.debitAmount) < 0){
+            throw new IllegalArgumentException("Not enough money");
+        }
+        AggregateLifecycle.apply(new AccountDebitedEvent(debitMoneyCommand.id,debitMoneyCommand.transactionId, debitMoneyCommand.debitAmount, debitMoneyCommand.currency));
     }
 
     @EventSourcingHandler
     protected void on(AccountDebitedEvent moneyDebitedEvent){
-//        if (this.accountBalance >= 0 & (this.accountBalance - moneyDebitedEvent.debitAmount) < 0){
-//            AggregateLifecycle.apply(new AccountHeldEvent(this.id, Status.HOLD));
-//        }
         this.accountBalance -= moneyDebitedEvent.debitAmount;
     }
-//    @EventSourcingHandler
-//    protected void on(AccountHeldEvent accountHeldEvent){
-//        this.status = String.valueOf(accountHeldEvent.status);
-//    }
+
+
 }

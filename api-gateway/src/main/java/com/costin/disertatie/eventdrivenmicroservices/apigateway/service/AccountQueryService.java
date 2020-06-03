@@ -1,5 +1,6 @@
 package com.costin.disertatie.eventdrivenmicroservices.apigateway.service;
 
+import com.costin.disertatie.api.query.GetAllAccountsQuery;
 import com.costin.disertatie.api.entity.AccountDTO;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
@@ -28,4 +29,7 @@ public class AccountQueryService {
         return queryGateway.query("getAccount",accountId, ResponseTypes.instanceOf(AccountDTO.class));
     }
 
+    public CompletableFuture<List<AccountDTO>> getAccounts() {
+        return queryGateway.query(new GetAllAccountsQuery(), ResponseTypes.multipleInstancesOf(AccountDTO.class));
+    }
 }

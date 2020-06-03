@@ -50,6 +50,11 @@ public class AccountController {
     public List<Object> listEventsForAccount(@PathVariable(value = "accountNumber") String accountNumber){
         return accountQueryService.listEventsForAccount(accountNumber);
     }
+
+    @GetMapping
+    public CompletableFuture<List<AccountDTO>> getAccounts(){
+        return accountQueryService.getAccounts();
+    }
     @GetMapping("/accounts/{accountId}")
     public CompletableFuture<AccountDTO> getAccount(@PathVariable(value = "accountId") String accountId){
         return accountQueryService.getAccount(accountId);
