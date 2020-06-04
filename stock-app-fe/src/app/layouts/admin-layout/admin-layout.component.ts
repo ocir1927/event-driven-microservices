@@ -30,6 +30,7 @@ export class AdminLayoutComponent implements OnInit {
       this.location.subscribe((ev:PopStateEvent) => {
           this.lastPoppedUrl = ev.url;
       });
+
        this.router.events.subscribe((event:any) => {
           if (event instanceof NavigationStart) {
              if (event.url != this.lastPoppedUrl)
@@ -42,6 +43,7 @@ export class AdminLayoutComponent implements OnInit {
                  window.scrollTo(0, 0);
          }
       });
+
       if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
       }
 
@@ -116,9 +118,11 @@ export class AdminLayoutComponent implements OnInit {
           }
       });
   }
+
   ngAfterViewInit() {
       this.runOnRouteChange();
   }
+
   isMaps(path){
       var titlee = this.location.prepareExternalUrl(this.location.path());
       titlee = titlee.slice( 1 );
@@ -136,6 +140,7 @@ export class AdminLayoutComponent implements OnInit {
       ps.update();
     }
   }
+
   isMac(): boolean {
       let bool = false;
       if (navigator.platform.toUpperCase().indexOf('MAC') >= 0 || navigator.platform.toUpperCase().indexOf('IPAD') >= 0) {
