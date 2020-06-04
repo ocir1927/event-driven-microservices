@@ -5,9 +5,11 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-public class Order {
+
+public class OrdersProjection {
 
     @Id
     private String orderId;
@@ -20,10 +22,10 @@ public class Order {
 
     private Status status;
 
-    public Order() {
+    public OrdersProjection() {
     }
 
-    public Order(String orderId, String accountId, double value, String stockSymbol, Status status) {
+    public OrdersProjection(String orderId, String accountId, double value, String stockSymbol, Status status) {
         this.orderId = orderId;
         this.accountId = accountId;
         this.value = value;
