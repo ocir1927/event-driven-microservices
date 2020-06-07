@@ -8,11 +8,13 @@ import { ComponentsModule } from './components/components.module';
 import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { WatchlistComponent } from './watchlist/watchlist.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdminLayoutComponent
+    AdminLayoutComponent,
+    WatchlistComponent
   ],
   imports: [
     BrowserModule,
