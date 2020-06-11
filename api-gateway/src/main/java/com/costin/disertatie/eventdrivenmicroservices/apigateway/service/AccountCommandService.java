@@ -21,7 +21,7 @@ public class AccountCommandService {
     }
 
     public CompletableFuture<String> createAccount(AccountCreateDTO accountCreateDTO) {
-        return commandGateway.send(new CreateAccountCommand(UUID.randomUUID().toString(), accountCreateDTO.getStartingBalance(), accountCreateDTO.getCurrency(),accountCreateDTO.getOwner()));
+        return commandGateway.send(new CreateAccountCommand(UUID.randomUUID().toString(), accountCreateDTO.getStartingBalance(), accountCreateDTO.getCurrency()));
     }
 
     public CompletableFuture<String> creditMoneyToAccount(String accountNumber, MoneyCreditDTO moneyCreditDTO) {

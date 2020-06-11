@@ -9,12 +9,19 @@ import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { WatchlistComponent } from './watchlist/watchlist.component';
+import { HttpClientModule } from '@angular/common/http';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { LoginComponent } from './login/login.component';
+import { MaterialModule } from './material.module/material.module';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    WatchlistComponent
+    WatchlistComponent,
+    SignUpComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -22,10 +29,11 @@ import { WatchlistComponent } from './watchlist/watchlist.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
+    HttpClientModule,
     ComponentsModule,
     RouterModule,
     AppRoutingModule,
+    MaterialModule
   ],
   providers: [],
   bootstrap: [

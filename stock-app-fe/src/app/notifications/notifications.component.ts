@@ -8,6 +8,8 @@ declare var $: any;
 export class NotificationsComponent implements OnInit {
 
   constructor() { }
+
+  
   showNotification(from, align){
       const type = ['','info','success','warning','danger'];
 

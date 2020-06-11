@@ -2,6 +2,8 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { StockService } from 'src/app/service/stock.service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +17,9 @@ export class NavbarComponent implements OnInit {
     private toggleButton: any;
     private sidebarVisible: boolean;
 
-    constructor(location: Location,  private element: ElementRef, private router: Router) {
+    private searchResult: Observable<any[]>;
+
+    constructor(location: Location,  private element: ElementRef, private router: Router, private stockService: StockService) {
       this.location = location;
           this.sidebarVisible = false;
     }
@@ -32,6 +36,13 @@ export class NavbarComponent implements OnInit {
            this.mobile_menu_visible = 0;
          }
      });
+    }
+
+    searchStocks(searchKeyword){
+        console.log(searchKeyword);
+        this.stockService.search(searchKeyword).subscribe(res =>{
+            this.searchResult = of(res);
+        })
     }
 
     sidebarOpen() {

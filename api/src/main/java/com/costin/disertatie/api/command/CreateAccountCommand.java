@@ -6,12 +6,10 @@ public class CreateAccountCommand extends BaseCommand<String>{
 
     public final String currency;
 
-    public final String owner;
 
-    public CreateAccountCommand(String id, double accountBalance, String currency, String owner) {
+    public CreateAccountCommand(String id, double accountBalance, String currency) {
         super(id);
         this.accountBalance = accountBalance;
         this.currency = currency;
-        this.owner = owner;
     }
 }

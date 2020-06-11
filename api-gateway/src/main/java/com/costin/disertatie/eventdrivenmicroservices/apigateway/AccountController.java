@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
-@RequestMapping(value = "/bank-accounts")
+@RequestMapping(value = "/api/bank-accounts")
 @Api(value = "Account Commands", description = "Account Commands Related Endpoints", tags = "Account Commands")
 public class AccountController {
 

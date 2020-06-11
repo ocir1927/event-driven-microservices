@@ -1,0 +1,16 @@
+.card-stock {
+    .card-header{
+        &.card-header-icon,
+        &.card-header-text{
+          text-align: left;
+        }
+    
+    }
+}
+
+.trade-btn {
+    width: 15vw;
+    height: 10vh;
+    margin-right: 100px !important;
+    margin-top: 10px !important;
+}

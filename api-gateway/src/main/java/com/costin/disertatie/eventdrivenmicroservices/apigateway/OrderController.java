@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
-@RequestMapping(value = "/orders")
+@RequestMapping(value = "/api/orders")
 @Api(value = "Order Controller", description = "Order query and command related rndpoints", tags = "Orders controller")
 public class OrderController {
 
@@ -28,34 +28,20 @@ public class OrderController {
     public CompletableFuture<String> createOrder(@RequestBody CreateOrderDTO createOrderDTO){
         return orderCommandService.createOrder(createOrderDTO);
     }
-/*
-
-    @PutMapping(value = "/credits/{accountNumber}")
-    public CompletableFuture<String> creditMoneyToAccount(@PathVariable(value = "accountNumber") String accountNumber,
-                                                          @RequestBody MoneyCreditDTO moneyCreditDTO){
-        return accountCommandService.creditMoneyToAccount(accountNumber, moneyCreditDTO);
-    }
-    @PutMapping(value = "/debits/{accountNumber}")
-    public CompletableFuture<String> debitMoneyFromAccount(@PathVariable(value = "accountNumber") String accountNumber,
-                                                           @RequestBody MoneyDebitDTO moneyDebitDTO){
-        return accountCommandService.debitMoneyFromAccount(accountNumber, moneyDebitDTO);
-    }
-
-    @GetMapping("/{accountNumber}/events")
-    public List<Object> listEventsForAccount(@PathVariable(value = "accountNumber") String accountNumber){
-        return accountQueryService.listEventsForAccount(accountNumber);
-    }
- */
 
     @GetMapping
     public CompletableFuture<List<OrderDTO>> getOrders(){
         return orderQueryService.getOrders();
     }
-    @GetMapping("/orders/{orderId}")
+
+    @GetMapping("/{orderId}")
     public CompletableFuture<OrderDTO> getOrder(@PathVariable(value = "orderId") String orderId){
         return orderQueryService.getOrder(orderId);
     }
 
-
+    @GetMapping("/account/{accountId}")
+    public CompletableFuture<List<OrderDTO>> getOrdersForAccoubt(@PathVariable(value = "accountId") String accountId) {
+        return orderQueryService.getOrdersForAccount(accountId);
+    }
 
 }

@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 // import { AppComponent } from './app.component';
 
 export class WebSocketAPI {
-    webSocketEndPoint: string = 'http://localhost:8080/stockws';
+    webSocketEndPoint: string = 'http://localhost:8095/stockws';
     topic: string = "/topic/stock-update";
     stompClient: any;
     appComponent: OnInit;
@@ -17,11 +17,13 @@ export class WebSocketAPI {
         console.log("Initialize WebSocket Connection");
         let ws = new SockJS(this.webSocketEndPoint);
         this.stompClient = Stomp.over(ws);
+        this.stompClient.debug = null;
         const _this = this;
         _this.stompClient.connect({}, function (frame) {
             _this.stompClient.subscribe(_this.topic, function (sdkEvent) {
                 _this.onMessageReceived(sdkEvent);
             });
+            _this._send("gimme stocks");
             //_this.stompClient.reconnect_delay = 2000;
         }, this.errorCallBack);
     };
@@ -46,8 +48,8 @@ export class WebSocketAPI {
   * @param {*} message 
   */
     _send(message) {
-        console.log("calling logout api via web socket");
-        this.stompClient.send("/app/stock-update", {}, JSON.stringify(message));
+        console.log("calling api to give stocks");
+        this.stompClient.send("/app/getLatestStockValues", {}, message);
     }
 
     onMessageReceived(message) {

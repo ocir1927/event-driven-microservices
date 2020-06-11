@@ -10,16 +10,13 @@ public class AccountDTO {
 
     private String status;
 
-    private String owner;
 
-    public AccountDTO(String accountId, double accountBalance, String currency, String status, String owner) {
+    public AccountDTO(String accountId, double accountBalance, String currency, String status) {
         this.accountId = accountId;
         this.accountBalance = accountBalance;
         this.currency = currency;
         this.status = status;
-        this.owner = owner;
     }
-
 
     public String getAccountId() {
         return accountId;
@@ -53,11 +50,4 @@ public class AccountDTO {
         this.status = status;
     }
 
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
 }

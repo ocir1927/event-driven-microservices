@@ -10,15 +10,31 @@
             <span class="navbar-toggler-icon icon-bar"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navigation">
-            <!-- <form class="navbar-form">
-                <div class="input-group no-border">
+            <div class="search-form">
+                <!-- <div class="input-group no-border">
                     <input type="text" value="" class="form-control" placeholder="Search...">
                     <button mat-raised-button type="submit" class="btn btn-white btn-round btn-just-icon">
                         <i class="material-icons">search</i>
                         <div class="ripple-container"></div>
                     </button>
+                </div> -->
+                <mat-form-field class="example-full-width">
+                    <input matInput
+                           placeholder="Search stock"
+                           aria-label="stock-search"
+                           [matAutocomplete]="auto"
+                           (keyup.enter)="searchStocks(search.value)"
+                           #search
+                           >
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option *ngFor="let stock of searchResult|async" [value]="stock.symbol">
+                        <!-- <img class="example-option-img" aria-hidden [src]="state.flag" height="25"> -->
+                        <!-- {{stock | json}} -->
+                        <span><b>{{stock["1. symbol"]}}</b></span> - <small>{{stock["2. name"]}}</small>
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
                 </div>
-            </form> -->
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)">

@@ -1,61 +1,76 @@
 package com.costin.disertatie.orderprojection.query;
 
-import com.costin.disertatie.api.command.OrderPaidEvent;
-import com.costin.disertatie.api.entity.OrderDTO;
 import com.costin.disertatie.api.entity.Status;
-import com.costin.disertatie.api.event.*;
-import com.costin.disertatie.api.query.GetAllOrdersQuery;
-import com.costin.disertatie.api.query.GetOrderQuery;
-import org.axonframework.eventhandling.EventHandler;
-import org.axonframework.queryhandling.QueryHandler;
-import org.springframework.stereotype.Component;
+import org.axonframework.modelling.command.AggregateIdentifier;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-@Component
+@Entity
+
 public class OrderEntity {
 
-    private OrderRepository orderRepository;
+    @Id
+    private String orderId;
 
-    public OrderEntity(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
+    private String accountId;
+
+    private double value;
+
+    private String stockSymbol;
+
+    private Status status;
+
+    public OrderEntity() {
     }
 
-    @EventHandler
-    public void on(OrderCreatedEvent event) {
-        orderRepository.save(new OrdersProjection(event.id, event.accountId, event.value, event.stockId, event.status));
+    public OrderEntity(String orderId, String accountId, double value, String stockSymbol, Status status) {
+        this.orderId = orderId;
+        this.accountId = accountId;
+        this.value = value;
+        this.stockSymbol = stockSymbol;
+        this.status = status;
     }
 
-
-    @EventHandler
-    protected void on(OrderPaidEvent event) {
-        orderRepository.findById(event.id).map(order -> {
-                    order.setStatus(Status.COMPLETE);
-                    return order;
-                });
-    }
-//
-//    @EventHandler
-//    public void on(AccountDebitedEvent event) {
-//        orderRepository.findById(event.id).map(account -> {
-//            account.setAccountBalance(account.getAccountBalance() - event.debitAmount);
-//            return account;
-//        });
-//    }
-
-    @QueryHandler
-    public OrderDTO findOne(GetOrderQuery query) {
-        OrdersProjection order = orderRepository.findById(query.orderId).orElseThrow();
-        return new OrderDTO(order.getOrderId(), order.getAccountId(), order.getValue(), order.getStockSymbol(), order.getStatus());
+    public String getOrderId() {
+        return orderId;
     }
 
-    @QueryHandler
-    public List<OrderDTO> findAll(GetAllOrdersQuery query) {
-        List<OrdersProjection> orders = orderRepository.findAll();
-        return orders.stream()
-                .map(order -> new OrderDTO(order.getOrderId(), order.getAccountId(), order.getValue(), order.getStockSymbol(), order.getStatus()))
-                .collect(Collectors.toList());
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
 
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public String getStockSymbol() {
+        return stockSymbol;
+    }
+
+    public void setStockSymbol(String stockSymbol) {
+        this.stockSymbol = stockSymbol;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
+

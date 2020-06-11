@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import * as $ from 'jquery';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 
 @Injectable({
@@ -16,7 +16,7 @@ export class PortofolioService {
   private stompClient;
   stockList :Observable<any> = new Observable();
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     // this.initializeWebSocketConnection();
     // 
   }
