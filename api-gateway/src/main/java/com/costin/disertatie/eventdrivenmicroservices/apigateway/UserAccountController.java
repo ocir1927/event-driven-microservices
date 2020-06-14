@@ -1,15 +1,14 @@
 package com.costin.disertatie.eventdrivenmicroservices.apigateway;
 
-import com.costin.disertatie.api.entity.OrderDTO;
 import com.costin.disertatie.api.entity.UserAccountDTO;
-import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.AccountCreateDTO;
-import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.UserAccountCreateDTO;
 import com.costin.disertatie.eventdrivenmicroservices.apigateway.service.UserAccountCommandService;
 import com.costin.disertatie.eventdrivenmicroservices.apigateway.service.UserAccountQueryService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.CompletableFuture;
 

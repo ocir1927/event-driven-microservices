@@ -22,15 +22,18 @@ public class OrderEntity {
 
     private Status status;
 
+    private double price;
+
     public OrderEntity() {
     }
 
-    public OrderEntity(String orderId, String accountId, double value, String stockSymbol, Status status) {
+    public OrderEntity(String orderId, String accountId, double value, String stockSymbol, Status status, double price) {
         this.orderId = orderId;
         this.accountId = accountId;
         this.value = value;
         this.stockSymbol = stockSymbol;
         this.status = status;
+        this.price = price;
     }
 
     public String getOrderId() {
@@ -71,6 +74,14 @@ public class OrderEntity {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }
 

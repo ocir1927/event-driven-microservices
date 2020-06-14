@@ -18,6 +18,6 @@ public class OrderCommandService {
     }
 
     public CompletableFuture<String> createOrder(CreateOrderDTO createOrderDTO) {
-        return this.commandGateway.send(new CreateNewOrderCommand(UUID.randomUUID().toString(),createOrderDTO.getAccountId(),createOrderDTO.getStockId(),createOrderDTO.getValue()));
+        return this.commandGateway.send(new CreateNewOrderCommand(UUID.randomUUID().toString(),createOrderDTO.getAccountId(),createOrderDTO.getStockId(),createOrderDTO.getValue(),createOrderDTO.getPrice()));
     }
 }

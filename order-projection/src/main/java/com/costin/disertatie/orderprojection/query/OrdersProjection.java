@@ -25,7 +25,7 @@ public class OrdersProjection {
 
     @EventHandler
     public void on(OrderCreatedEvent event) {
-        orderRepository.save(new OrderEntity(event.id, event.accountId, event.value, event.stockId, event.status));
+        orderRepository.save(new OrderEntity(event.id, event.accountId, event.value, event.stockId, event.status,event.price));
     }
 
 
@@ -48,14 +48,14 @@ public class OrdersProjection {
     @QueryHandler
     public OrderDTO findOne(GetOrderQuery query) {
         OrderEntity order = orderRepository.findById(query.orderId).orElseThrow();
-        return new OrderDTO(order.getOrderId(), order.getAccountId(), order.getValue(), order.getStockSymbol(), order.getStatus());
+        return new OrderDTO(order.getOrderId(), order.getAccountId(), order.getValue(), order.getStockSymbol(), order.getStatus(),order.getPrice());
     }
 
     @QueryHandler
     public List<OrderDTO> findAll(GetAllOrdersQuery query) {
         List<OrderEntity> orders = orderRepository.findAll();
         return orders.stream()
-                .map(order -> new OrderDTO(order.getOrderId(), order.getAccountId(), order.getValue(), order.getStockSymbol(), order.getStatus()))
+                .map(order -> new OrderDTO(order.getOrderId(), order.getAccountId(), order.getValue(), order.getStockSymbol(), order.getStatus(),order.getPrice()))
                 .collect(Collectors.toList());
 
     }
@@ -64,7 +64,7 @@ public class OrdersProjection {
     public List<OrderDTO> findAllForAccount(GetAllOrdersForAccount query){
         List<OrderEntity> ordersForId = orderRepository.findOrderEntitiesByAccountId(query.getAccountId());
         return ordersForId.stream()
-                .map(order -> new OrderDTO(order.getOrderId(), order.getAccountId(), order.getValue(), order.getStockSymbol(), order.getStatus()))
+                .map(order -> new OrderDTO(order.getOrderId(), order.getAccountId(), order.getValue(), order.getStockSymbol(), order.getStatus(),order.getPrice()))
                 .collect(Collectors.toList());
     }
 }

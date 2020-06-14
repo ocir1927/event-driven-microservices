@@ -49,4 +49,5 @@ public class UserAccountAggregate {
         this.description = event.description;
         LOG.info("User account created for username: " + this.username);
     }
+
 }

@@ -11,15 +11,18 @@ public class OrderDTO {
 
     private Status status;
 
+    private double price;
+
     public OrderDTO() {
     }
 
-    public OrderDTO(String orderId, String accountId, double value, String stockSymbol, Status status) {
+    public OrderDTO(String orderId, String accountId, double value, String stockSymbol, Status status, double price) {
         this.orderId = orderId;
         this.accountId = accountId;
         this.value = value;
         this.stockSymbol = stockSymbol;
         this.status = status;
+        this.price = price;
     }
 
     public String getOrderId() {
@@ -60,5 +63,13 @@ public class OrderDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

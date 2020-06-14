@@ -119,7 +119,7 @@ export class DashboardComponent implements OnInit {
       var datawebsiteViewsChart = {
         labels: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
         series: [
-          [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]
+          [500, 800, 1250, 2000, 1700, 2500]
 
         ]
       };
@@ -127,8 +127,8 @@ export class DashboardComponent implements OnInit {
           axisX: {
               showGrid: false
           },
-          low: 0,
-          high: 1000,
+          low: Math.min(...datawebsiteViewsChart.series[0]) - 0.1 * Math.min(...datawebsiteViewsChart.series[0]),
+          high: Math.max(...datawebsiteViewsChart.series[0]) + 0.1 * Math.max(...datawebsiteViewsChart.series[0]),
           chartPadding: { top: 0, right: 5, bottom: 0, left: 0}
       };
       var responsiveOptions: any[] = [

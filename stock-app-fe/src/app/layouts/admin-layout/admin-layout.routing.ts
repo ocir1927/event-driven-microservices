@@ -11,5 +11,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'user-profile',   component: UserProfileComponent },
     { path: 'portofolio',     component: PortofolioComponent },
     { path: 'notifications',  component: NotificationsComponent },
-    { path: 'stockview',      component: StockviewComponent }
+    { path: 'stockview/:stockSymbol',      component: StockviewComponent }
 ];

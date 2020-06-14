@@ -8,4 +8,6 @@ export class Order {
     stockSymbol: string;
 
     status: string;
+
+    price: number;
 }

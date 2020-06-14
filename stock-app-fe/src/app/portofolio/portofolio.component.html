@@ -4,7 +4,7 @@
           <div class="col-md-12">
               <div class="card">
                   <div class="card-header card-header-danger">
-                      <h4 class="card-title ">Your Portofolio</h4>
+                      <h4 class="card-title ">Your Portfolio</h4>
                       <p class="card-category"> Here you can see your investments</p>
                   </div>
                   <div class="card-body">
@@ -12,23 +12,28 @@
                           <table class="table">
                               <thead class=" text-primary">
                                   <th>Stock Symbol</th>
-                                  <th>Invested</th>
+                                  <th>Owned units</th>
                                   <th>Stock Value</th>
                                   <th>P/L</th>
                               </thead>
                               <tbody>
                                   <tr *ngFor="let stockProjection of orderProjections">
                                       <td>
-                                          {{stockProjection?.stockSymbol}}
+                                          {{stockProjection?.stockSymbol.toUpperCase()}}
                                       </td>
                                       <td>
                                           {{stockProjection?.invested}}
                                       </td>
                                       <td>
-                                          {{stockProjection?.currentValue}}
+                                          {{stockProjection?.currentValue | number :'1.1-2'}}
+                                      </td>
+                                      <td [ngClass]="{'red': stockProjection?.profitLoss < 0, 'green': stockProjection?.profitLoss > 0}">
+                                          <b>{{stockProjection?.profitLoss < 0 ? '-' : '+' }}{{stockProjection?.profitLoss | number :'1.1-2'}}$</b>
                                       </td>
                                       <td>
-                                          {{stockProjection?.profitLoss}}
+                                        <button mat-icon-button color="accent" (click)="closeOrder(stockProjection)">
+                                            <mat-icon aria-label="reset">update</mat-icon>
+                                        </button>
                                       </td>
                                   </tr>
                               </tbody>

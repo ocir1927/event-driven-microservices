@@ -39,6 +39,4 @@ public class UserAccountQueryService {
             throw new IllegalArgumentException("wrong username or password");
     }
 
-//    public CompletableFuture<UserLo>
-
 }

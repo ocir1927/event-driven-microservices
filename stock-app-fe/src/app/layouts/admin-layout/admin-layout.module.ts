@@ -15,6 +15,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import { StockviewComponent } from 'src/app/stockview/stockview.component';
 import { SockTradeDialogComponent } from 'src/app/stockview/sock-trade-dialog/sock-trade-dialog.component';
+import { MaterialModule } from 'src/app/material.module/material.module';
 
 @NgModule({
   imports: [
@@ -22,12 +23,7 @@ import { SockTradeDialogComponent } from 'src/app/stockview/sock-trade-dialog/so
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
     ReactiveFormsModule,
-    MatButtonModule,
-    MatRippleModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatTooltipModule,
+    MaterialModule
   ],
   declarations: [
     DashboardComponent,

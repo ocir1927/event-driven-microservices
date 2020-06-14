@@ -1,18 +1,20 @@
-<h1 mat-dialog-title>Trade stock</h1>
+<h1 mat-dialog-title>Trade {{tradeInfo.stockSymbol}}</h1>
 <div mat-dialog-content fxLayout="column">
-  <mat-form-field>
-    <input matInput  placeholder="Name">
-  </mat-form-field>
+  <!-- <mat-form-field> -->
+  <div class="current-price">Current stock price: <b>{{tradeInfo.stockPrice | number :'1.1-2'}}$ /unit</b></div>
+  <!-- </mat-form-field> -->
 
-  <mat-form-field>
-    <input matInput  placeholder="Username">
-  </mat-form-field>
-
-  <mat-form-field>
-    <input matInput  placeholder="Email">
-  </mat-form-field>
+  <div class="invested col-md-8" >
+    <mat-form-field>
+      <input matInput [(ngModel)]="tradeInfo.invested" placeholder="How much money do you want to invest in this stock?">
+    </mat-form-field>
+  </div>
+  <div class="will-own">
+    You will own <b>{{tradeInfo.invested/tradeInfo.stockPrice | number :'1.1-2'}}</b> units of this stock
+  </div>
+  <br>
 </div>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button >Create</button>
+  <button mat-button [mat-dialog-close]="tradeInfo">TRADE</button>
 </div>

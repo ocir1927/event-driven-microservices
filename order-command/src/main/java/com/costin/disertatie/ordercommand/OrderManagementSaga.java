@@ -43,8 +43,7 @@ public class OrderManagementSaga {
         SagaLifecycle.associateWith("transactionId", transactionId);
         // send the commands
         LOG.debug("Sending debit money command");
-        commandGateway.send(new DebitAccountCommand(event.accountId,event.value, transactionId, "USD"));
-
+        commandGateway.send(new DebitAccountCommand(event.accountId,event.price, transactionId, "USD"));
     }
 
 

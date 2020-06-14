@@ -2,14 +2,10 @@ package com.costin.disertatie.ordercommand.aggregate;
 
 import com.costin.disertatie.api.command.*;
 import com.costin.disertatie.api.entity.Status;
-import com.costin.disertatie.api.event.AccountCreatedEvent;
 import com.costin.disertatie.api.event.OrderCreatedEvent;
-import com.costin.disertatie.api.event.OrderPendingEvent;
 import org.axonframework.commandhandling.CommandHandler;
-import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
-import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
@@ -28,15 +24,17 @@ public class OrderAggregate {
 
     private Status status;
 
+    private double price;
+
     public OrderAggregate() {
     }
 
     @CommandHandler
     public OrderAggregate(CreateNewOrderCommand createNewOrderCommand){
-        if(createNewOrderCommand.value <50){
-            throw new IllegalArgumentException("Value must be >50");
-        }
-        apply(new OrderCreatedEvent(createNewOrderCommand.id, createNewOrderCommand.accountId, createNewOrderCommand.stockId,createNewOrderCommand.value,Status.PENDING));
+//        if(createNewOrderCommand.value <50){
+//            throw new IllegalArgumentException("Value must be >50");
+//        }
+        apply(new OrderCreatedEvent(createNewOrderCommand.id, createNewOrderCommand.accountId, createNewOrderCommand.stockId,createNewOrderCommand.value, Status.PENDING, createNewOrderCommand.price));
     }
 
     @EventSourcingHandler
@@ -46,6 +44,7 @@ public class OrderAggregate {
         this.stockSymbol = orderCreatedEvent.stockId;
         this.value = orderCreatedEvent.value;
         this.status = orderCreatedEvent.status;
+        this.price = orderCreatedEvent.price;
     }
 
     @CommandHandler

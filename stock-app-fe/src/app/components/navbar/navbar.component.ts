@@ -45,6 +45,11 @@ export class NavbarComponent implements OnInit {
         })
     }
 
+    openStockPage(value){
+        console.log(value);
+        this.router.navigate(['/stockview/' + value]);
+    }
+
     sidebarOpen() {
         const toggleButton = this.toggleButton;
         const body = document.getElementsByTagName('body')[0];

@@ -46,13 +46,13 @@ export class PortofolioComponent implements OnInit, OnDestroy {
     console.log("Manage orders called");
     this.orderProjections = [];
     this.myOrders.forEach(order => {
-      let foundCorelation = this.stockUpdates.find(stkUpdt => order.stockSymbol === stkUpdt.ticker);
+      let foundCorelation = this.stockUpdates.find(stkUpdt => order.stockSymbol.toUpperCase() === stkUpdt.ticker.toUpperCase());
       if (foundCorelation) {
         let stockProjection: StockProjection = new StockProjection();
         stockProjection.stockSymbol = order.stockSymbol;
         stockProjection.invested = order.value;
         stockProjection.currentValue = foundCorelation.last;
-        stockProjection.profitLoss = order.value * foundCorelation.last;
+        stockProjection.profitLoss = order.value * foundCorelation.last - order.price;
         this.orderProjections.push(stockProjection);
       }
     })
