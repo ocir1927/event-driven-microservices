@@ -6,6 +6,9 @@ import { OrderService } from './order.service';
 import { Order } from '../dto/order';
 import { StockProjection } from '../dto/stock.projection';
 import { AuthService } from '../login/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmCloseOrderDialogComponent } from './confirm-close-order-dialog/confirm-close-order-dialog.component';
+import { NotificationService } from '../notifications/notification.service';
 
 @Component({
   selector: 'app-portofolio',
@@ -23,6 +26,8 @@ export class PortofolioComponent implements OnInit, OnDestroy {
   constructor(
     private portofolioService: PortofolioService,
     private orderService: OrderService,
+    public dialog: MatDialog,
+    private notificationService: NotificationService,
     private authService: AuthService) {
     this.webSocketAPI = new WebSocketAPI(this);
   }
@@ -32,9 +37,29 @@ export class PortofolioComponent implements OnInit, OnDestroy {
     let currentUser = JSON.parse(localStorage.getItem("currentUser"));
     console.log(currentUser);
     this.accountId = currentUser['accountId'];
-    
+
     // this.accountId =
-      this.connect();
+    this.connect();
+    this.fetchOrders();
+  }
+
+  closeOrder(orderInfo) {
+
+    const confirmClose = this.dialog.open(ConfirmCloseOrderDialogComponent, { width: '20vw', data: {} },);
+
+    confirmClose.afterClosed().subscribe(res => {
+      if (res === true) {
+        console.log("closing order...");
+        this.orderService.closeOrder(orderInfo).subscribe(res => {
+          console.log("order closed: ", res);
+          this.notificationService.showNotification("Your order was successfully closed!", 2, "center");
+          this.fetchOrders();
+        })
+      }
+    });
+  }
+
+  fetchOrders(){
     this.orderService.getOrdersForUser(this.accountId).subscribe(orders => {
       console.log(orders);
       this.myOrders = orders;
@@ -49,8 +74,10 @@ export class PortofolioComponent implements OnInit, OnDestroy {
       let foundCorelation = this.stockUpdates.find(stkUpdt => order.stockSymbol.toUpperCase() === stkUpdt.ticker.toUpperCase());
       if (foundCorelation) {
         let stockProjection: StockProjection = new StockProjection();
+        stockProjection.orderId = order.orderId;
         stockProjection.stockSymbol = order.stockSymbol;
-        stockProjection.invested = order.value;
+        stockProjection.invested = order.price;
+        stockProjection.ownedUnits = order.value;
         stockProjection.currentValue = foundCorelation.last;
         stockProjection.profitLoss = order.value * foundCorelation.last - order.price;
         this.orderProjections.push(stockProjection);
@@ -81,7 +108,6 @@ export class PortofolioComponent implements OnInit, OnDestroy {
     this.stockUpdates = message;
     console.log(this.stockUpdates);
     this.manageOrders();
-
   }
 
 }

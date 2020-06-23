@@ -13,6 +13,7 @@
                               <thead class=" text-primary">
                                   <th>Stock Symbol</th>
                                   <th>Owned units</th>
+                                  <th>Invested</th>
                                   <th>Stock Value</th>
                                   <th>P/L</th>
                               </thead>
@@ -21,6 +22,9 @@
                                       <td>
                                           {{stockProjection?.stockSymbol.toUpperCase()}}
                                       </td>
+                                      <td>
+                                        {{stockProjection?.ownedUnits}}
+                                    </td>
                                       <td>
                                           {{stockProjection?.invested}}
                                       </td>

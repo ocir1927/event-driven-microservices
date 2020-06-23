@@ -5,6 +5,7 @@ import com.costin.disertatie.api.entity.AccountDTO;
 import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.AccountCreateDTO;
 import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.MoneyCreditDTO;
 import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.MoneyDebitDTO;
+import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.WithdrawMoneyDTO;
 import com.costin.disertatie.eventdrivenmicroservices.apigateway.service.AccountCommandService;
 import com.costin.disertatie.eventdrivenmicroservices.apigateway.service.AccountQueryService;
 import io.swagger.annotations.Api;
@@ -55,9 +56,15 @@ public class AccountController {
     public CompletableFuture<List<AccountDTO>> getAccounts(){
         return accountQueryService.getAccounts();
     }
+
     @GetMapping("/accounts/{accountId}")
     public CompletableFuture<AccountDTO> getAccount(@PathVariable(value = "accountId") String accountId){
         return accountQueryService.getAccount(accountId);
+    }
+
+    @PostMapping("/accounts/{accountId}/withdraw")
+    public CompletableFuture<String> withdrawMoney(@PathVariable(value = "accountId") String accountId,@RequestBody WithdrawMoneyDTO withdrawMoneyDTO){
+        return accountCommandService.withdrawMoney(withdrawMoneyDTO);
     }
 
 }

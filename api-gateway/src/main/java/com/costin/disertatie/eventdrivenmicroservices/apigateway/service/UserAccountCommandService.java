@@ -1,13 +1,8 @@
 package com.costin.disertatie.eventdrivenmicroservices.apigateway.service;
 
-import com.costin.disertatie.api.command.CreateAccountCommand;
-import com.costin.disertatie.api.command.CreateUserAccountCommand;
-import com.costin.disertatie.api.command.CreditAccountCommand;
-import com.costin.disertatie.api.command.DebitAccountCommand;
-import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.AccountCreateDTO;
-import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.MoneyCreditDTO;
-import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.MoneyDebitDTO;
-import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.UserAccountCreateDTO;
+import com.costin.disertatie.api.command.*;
+import com.costin.disertatie.api.entity.UserAccountDTO;
+import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.*;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,11 +29,7 @@ public class UserAccountCommandService {
         return commandGateway.send(new CreateUserAccountCommand(accountCreateDTO.getUsername(), encryptedPassword, UUID.randomUUID().toString(), accountCreateDTO.getName(), accountCreateDTO.getEmail(), accountCreateDTO.getDescription()));
     }
 
-//    public CompletableFuture<String> creditMoneyToAccount(String accountNumber, MoneyCreditDTO moneyCreditDTO) {
-//        return commandGateway.send(new CreditAccountCommand(accountNumber, moneyCreditDTO.getCreditAmount(), moneyCreditDTO.getCurrency()));
-//    }
-//
-//    public CompletableFuture<String> debitMoneyFromAccount(String accountNumber, MoneyDebitDTO moneyDebitDTO) {
-//        return commandGateway.send(new DebitAccountCommand(accountNumber, moneyDebitDTO.getDebitAmount(),UUID.randomUUID().toString(), moneyDebitDTO.getCurrency()));
-//    }
+    public CompletableFuture<UserAccountDTO> updateProfile(UserProfileDTO userProfile) {
+        return commandGateway.send(new UpdateUserProfileCommand(userProfile.getUsername(),userProfile.getName(),userProfile.getEmail(),userProfile.getDescription()));
+    }
 }

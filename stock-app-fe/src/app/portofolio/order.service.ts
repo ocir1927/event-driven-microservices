@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { Order } from '../dto/order';
 import { CreateOrderDto } from '../dto/create.order';
+import { StockProjection } from '../dto/stock.projection';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,16 @@ export class OrderService {
   }
 
   createNewOrder(order: CreateOrderDto) {
-    return this.http.post<Order>(`${this.apiUrlOrders}/new-order`, order)
+    return this.http.post(`${this.apiUrlOrders}/new-order`, order, {responseType: 'text'})
     // throw new Error("Method not implemented.");
+  }
+
+  closeOrder(orderInfo: StockProjection){
+    return this.http.put(`${this.apiUrlOrders}/close/${orderInfo.orderId}`,orderInfo);
+  }
+
+  getOrderCount(accountId: string){
+    return this.http.get(`${this.apiUrlOrders}/account/${accountId}/order-count`);
   }
 
 }

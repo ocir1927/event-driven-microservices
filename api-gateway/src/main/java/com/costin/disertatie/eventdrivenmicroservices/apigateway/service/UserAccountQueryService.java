@@ -3,6 +3,7 @@ package com.costin.disertatie.eventdrivenmicroservices.apigateway.service;
 import com.costin.disertatie.api.entity.UserAccountDTO;
 import com.costin.disertatie.api.query.GetUserAccountByUsernameQuery;
 import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.UserLogin;
+import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.UserProfileDTO;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
@@ -38,5 +39,6 @@ public class UserAccountQueryService {
         else
             throw new IllegalArgumentException("wrong username or password");
     }
+
 
 }

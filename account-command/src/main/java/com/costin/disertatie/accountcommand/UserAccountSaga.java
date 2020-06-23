@@ -23,7 +23,7 @@ public class UserAccountSaga {
     private transient CommandGateway commandGateway;
 
     @Autowired
-    private EventGateway eventGateway;
+    private transient EventGateway eventGateway;
 
     private boolean paid = false;
     private String username;

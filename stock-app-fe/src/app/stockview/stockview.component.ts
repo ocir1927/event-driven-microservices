@@ -1,39 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SockTradeDialogComponent } from './sock-trade-dialog/sock-trade-dialog.component';
 import * as Chartist from 'chartist';
-import { ActivatedRoute, ParamMap, NavigationEnd, Router, NavigationStart } from '@angular/router';
+import { ActivatedRoute, ParamMap, NavigationEnd, Router, NavigationStart, ResolveEnd } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { StockService } from '../service/stock.service';
 import { OrderService } from '../portofolio/order.service';
 import { Order } from '../dto/order';
 import { CurrentUser } from '../dto/current.user';
 import { CreateOrderDto } from '../dto/create.order';
+import { Observable, Subscription } from 'rxjs';
+import { NotificationService } from '../notifications/notification.service';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-stockview',
   templateUrl: './stockview.component.html',
   styleUrls: ['./stockview.component.scss']
 })
-export class StockviewComponent implements OnInit {
+export class StockviewComponent implements OnInit, OnDestroy {
   stockSymbol: string;
   stockData = {};
   stockValues: any[] = [];
   currentUser: CurrentUser;
+  routerSubscription: Subscription;
 
   constructor(public dialog: MatDialog,
     private route: ActivatedRoute,
     private stockService: StockService,
     private orderService: OrderService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) { }
+
+
+  ngOnDestroy(): void {
+    console.log("On destroy called, unsubscribing router events");
+
+    this.routerSubscription.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
     this.stockSymbol = this.route.snapshot.paramMap.get("stockSymbol");
     this.getStockData()
 
-    this.router.events.subscribe(event => {
+    this.routerSubscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         // if (isPlatformBrowser(this.platformId)) {
         //   gtag('set', 'page', event.urlAfterRedirects);
@@ -44,26 +56,44 @@ export class StockviewComponent implements OnInit {
     });
 
     this.stockData["stockSymbol"] = this.stockSymbol;
-
-    
-    console.log(this.stockSymbol);
-    this.initializeChart();
-
   }
+
+  addToWatchList(stockSymbol: string) {
+    let watchList = JSON.parse(localStorage.getItem(`${this.currentUser.username}_watchlist`));
+
+    if (watchList == null || watchList === {} || watchList === [] || watchList === "") {
+      watchList = [];
+      watchList.push(stockSymbol);
+    } else {
+      if (!watchList.includes(stockSymbol))
+        watchList.push(stockSymbol);
+    }
+    console.log(watchList);
+
+    localStorage.setItem(`${this.currentUser.username}_watchlist`, JSON.stringify(watchList));
+  }
+
   getStockData() {
     this.stockSymbol = this.route.snapshot.paramMap.get("stockSymbol");
-    this.stockService.getStockInfo(this.stockSymbol).subscribe(res => {
-      // res => res['Time Series (5min)']
-      // let queriedStockValues = res['Time Series (5min)'];
+    this.stockService.getStockCurrentData(this.stockSymbol).subscribe(res => {
+      console.log(res);
+      this.stockData["stockPrice"] = res["05. price"];
+    });
+
+    this.stockService.getMonthlyStockInfo(this.stockSymbol).subscribe(res => {
+
       this.stockValues = [];
+
+
       for (var i in res)
         this.stockValues.push({
           "date": i,
           ...res[i]
         });
-      console.log(this.stockValues);
-      // this.stockValues = res;
-      this.stockData["stockPrice"] = this.stockValues[0]["1. open"];
+
+      this.stockValues = this.stockValues.slice(0, 12).reverse();
+      console.log("sliced months: ", this.stockValues);
+      this.initializeChart();
     });
 
 
@@ -76,24 +106,23 @@ export class StockviewComponent implements OnInit {
       if (res) {
         let units = res.invested / res.stockPrice
         units = +units.toFixed(2);
-        this.orderService.createNewOrder(new CreateOrderDto(this.currentUser.accountId, res.stockSymbol, units, +res.invested)).subscribe()
-
+        this.orderService.createNewOrder(new CreateOrderDto(this.currentUser.accountId, res.stockSymbol, units, +res.invested)).subscribe(
+          res => { this.notificationService.showNotification("Your order was placed", 2, "center") },
+          error => { this.notificationService.showNotification("There was a problem creating your order", 4, "center") }
+        );
       }
-      //   this.userService.addUser(res).subscribe(
-      //     res => {
-      //       this.loadUsers();
-      //     },
-      //     error => this.errorHandlingService.handleError(error));
-      // }
     });
   }
 
   initializeChart() {
+    let monthlyValues = [];
+    this.stockValues.forEach(element => {
+      monthlyValues.push(element["4. close"])
+    });
     const dataDailySalesChart: any = {
-      labels: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
+      labels: ['Aug 19\'', 'Sept 19\'', 'Oct 19\'', 'Nov 19\'', 'Dec 19\'', 'Jan 20\'', 'Feb 20\'', 'Mar 20\'', 'Apr 20\'', 'May 20\'', 'Jun 20\'', 'Jul 20\'',],
       series: [
-        [323, 273, 225, 287, 318, 338]
-
+        monthlyValues
       ]
     };
 

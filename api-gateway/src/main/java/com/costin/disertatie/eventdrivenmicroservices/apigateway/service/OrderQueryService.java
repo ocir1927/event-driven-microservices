@@ -3,6 +3,7 @@ package com.costin.disertatie.eventdrivenmicroservices.apigateway.service;
 import com.costin.disertatie.api.entity.OrderDTO;
 import com.costin.disertatie.api.query.GetAllOrdersForAccount;
 import com.costin.disertatie.api.query.GetAllOrdersQuery;
+import com.costin.disertatie.api.query.GetOrderCountForAccount;
 import com.costin.disertatie.api.query.GetOrderQuery;
 import org.axonframework.eventsourcing.eventstore.EventStore;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
@@ -34,5 +35,9 @@ public class OrderQueryService {
 
     public CompletableFuture<List<OrderDTO>> getOrdersForAccount(String accountId) {
         return queryGateway.query(new GetAllOrdersForAccount(accountId), ResponseTypes.multipleInstancesOf(OrderDTO.class));
+    }
+
+    public CompletableFuture<Integer> getOrderCountForAccount(String accountId) {
+        return queryGateway.query(new GetOrderCountForAccount(accountId), ResponseTypes.instanceOf(Integer.class));
     }
 }

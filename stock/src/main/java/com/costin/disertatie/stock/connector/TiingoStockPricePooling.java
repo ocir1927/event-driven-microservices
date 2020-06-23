@@ -44,7 +44,7 @@ public class TiingoStockPricePooling {
         return builder.toUriString();
     }
 
-    @Scheduled(fixedDelay = 10000L)
+    @Scheduled(fixedDelay = 7500L)
     public void poolStockValues(){
         System.out.println("Calling external api");
         HttpHeaders headers = new HttpHeaders();

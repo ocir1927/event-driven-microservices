@@ -38,6 +38,12 @@ export class NavbarComponent implements OnInit {
      });
     }
 
+    
+  logOut(){
+    localStorage.removeItem("currentUser");
+    this.router.navigate(['/login'])
+  }
+
     searchStocks(searchKeyword){
         console.log(searchKeyword);
         this.stockService.search(searchKeyword).subscribe(res =>{
@@ -61,12 +67,14 @@ export class NavbarComponent implements OnInit {
 
         this.sidebarVisible = true;
     };
+
     sidebarClose() {
         const body = document.getElementsByTagName('body')[0];
         this.toggleButton.classList.remove('toggled');
         this.sidebarVisible = false;
         body.classList.remove('nav-open');
     };
+    
     sidebarToggle() {
         // const toggleButton = this.toggleButton;
         // const body = document.getElementsByTagName('body')[0];

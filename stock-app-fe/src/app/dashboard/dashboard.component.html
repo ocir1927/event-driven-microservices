@@ -1,59 +1,105 @@
 <div class="main-content">
-  <div class="container-fluid">
-      <div class="row">
+    <div class="container-fluid">
+        <div class="row">
 
-          <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                  <div class="card-header card-header-success card-header-icon">
-                      <div class="card-icon">
-                          <i class="material-icons">store</i>
-                      </div>
-                      <p class="card-category">Account Ballance</p>
-                      <h3 class="card-title">$2700</h3>
-                  </div>
-                  <div class="card-footer">
-                      <div class="stats">
-                          <i class="material-icons">date_range</i> Last 24 Hours
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
-                  <div class="card-header card-header-danger card-header-icon">
-                      <div class="card-icon">
-                          <i class="material-icons">info_outline</i>
-                      </div>
-                      <p class="card-category">Opened orders</p>
-                      <h3 class="card-title">4</h3>
-                  </div>
-                  <div class="card-footer">
-                      <div class="stats">
-                          <i class="material-icons">local_offer</i> Add more
-                      </div>
-                  </div>
-              </div>
-          </div>
-          
-      </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-success card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">store</i>
+                        </div>
+                        <p class="card-category">Account Ballance</p>
+                        <h3 class="card-title">{{accountBalance | number :'1.1-2'}} $</h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons">date_range</i> Last 24 Hours
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-danger card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">info_outline</i>
+                        </div>
+                        <p class="card-category">Opened orders</p>
+                        <h3 class="card-title">{{orderCount}}</h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons">local_offer</i> Add more
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2  card  card-stats col-md-8 col-sm-6">
+                <!-- <div class="card card-stats">
+                    <div class="card-header card-header-warning card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">info_outline</i>
+                        </div>
+                        <p class="card-category">Withdraw money</p> -->
+                        <button mat-raised-button (click)="withdrawMoney()"
+                            class="btn pull-right withdraw-btn">Withdraw</button>
+                    <!-- </div> -->
 
-      <div class="col-md-4">
-        <div class="card card-chart">
-            <div class="card-header card-header-warning">
-                <div class="ct-chart" id="websiteViewsChart"></div>
+                <!-- </div> -->
+                <div class="card-footer">
+                    <div class="stats">
+                        <i class="material-icons text-danger">warning</i>
+                        <a href="javascript:void(0)">Withdraw money from account</a>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <h4 class="card-title">Acount Balance</h4>
-                <p class="card-category">Acount ballance over last mounts</p>
+
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card card-chart">
+                    <div class="card-header card-header-success">
+                        <div class="ct-chart" id="websiteViewsChart"></div>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">Acount Balance</h4>
+                        <p class="card-category">Acount ballance over last mounts</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons">access_time</i> campaign sent 2 days ago
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-footer">
-                <div class="stats">
-                    <i class="material-icons">access_time</i> campaign sent 2 days ago
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title ">Watchlist</h4>
+                        <p class="card-category">Here are your followed stocks</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class=" text-primary">
+                                    <th>Stock Symbol</th>
+                                    <th>Stock Value</th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let stockProjection of orderProjections">
+                                        <td>
+                                            {{stockProjection?.stockSymbol.toUpperCase()}}
+                                        </td>
+                                        <td>
+                                            {{stockProjection?.currentValue | number :'1.1-2'}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-      
-  </div>
 </div>

@@ -1,0 +1,30 @@
+<h1 mat-dialog-title>Withdraw money</h1>
+<div mat-dialog-content fxLayout="column">
+  <!-- <mat-form-field> -->
+  <!-- <div class="current-price">Current stock price: <b>{{tradeInfo.stockPrice | number :'1.1-2'}}$ /unit</b></div> -->
+  <!-- </mat-form-field> -->
+
+  <div class="col-md-10" >
+    <mat-form-field>
+      <input matInput [(ngModel)]="withdraw.withdrawAmmount" placeholder="How much money do you want to withdraw?">
+    </mat-form-field>
+  </div>
+  
+  <div class="col-md-10" >
+    <mat-form-field>
+      <input matInput [(ngModel)]="withdraw.bankAccount" placeholder="Bank account">
+    </mat-form-field>
+  </div>
+
+  
+  <div class="col-md-10" >
+    <mat-form-field>
+      <input matInput [(ngModel)]="withdraw.ownerName" placeholder="Owner of the bank account">
+    </mat-form-field>
+  </div>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="withdraw">Withdraw</button>
+</div>

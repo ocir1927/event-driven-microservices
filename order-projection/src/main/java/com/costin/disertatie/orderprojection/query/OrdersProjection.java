@@ -6,6 +6,7 @@ import com.costin.disertatie.api.entity.Status;
 import com.costin.disertatie.api.event.*;
 import com.costin.disertatie.api.query.GetAllOrdersForAccount;
 import com.costin.disertatie.api.query.GetAllOrdersQuery;
+import com.costin.disertatie.api.query.GetOrderCountForAccount;
 import com.costin.disertatie.api.query.GetOrderQuery;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
@@ -36,14 +37,14 @@ public class OrdersProjection {
                     return order;
                 });
     }
-//
-//    @EventHandler
-//    public void on(AccountDebitedEvent event) {
-//        orderRepository.findById(event.id).map(account -> {
-//            account.setAccountBalance(account.getAccountBalance() - event.debitAmount);
-//            return account;
-//        });
-//    }
+
+    @EventHandler
+    public void on(OrderClosedEvent event){
+        orderRepository.findById(event.orderId).map(order->{
+            order.setStatus(Status.CLOSED);
+            return order;
+        });
+    }
 
     @QueryHandler
     public OrderDTO findOne(GetOrderQuery query) {
@@ -62,9 +63,14 @@ public class OrdersProjection {
 
     @QueryHandler
     public List<OrderDTO> findAllForAccount(GetAllOrdersForAccount query){
-        List<OrderEntity> ordersForId = orderRepository.findOrderEntitiesByAccountId(query.getAccountId());
+        List<OrderEntity> ordersForId = orderRepository.findOrderEntitiesByAccountNotClosed(query.getAccountId());
         return ordersForId.stream()
                 .map(order -> new OrderDTO(order.getOrderId(), order.getAccountId(), order.getValue(), order.getStockSymbol(), order.getStatus(),order.getPrice()))
                 .collect(Collectors.toList());
+    }
+
+    @QueryHandler
+    public Integer findAllForAccount(GetOrderCountForAccount query){
+        return orderRepository.countAllByAccountIdNotClosed(query.accountId);
     }
 }

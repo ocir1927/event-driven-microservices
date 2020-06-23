@@ -14,4 +14,12 @@ export class UserProfileService {
   getUserInfo(username){
     return this.http.get(`${this.userApiUrl}/${username}`);
   }
+
+  getAccountBallance(accountId){
+    return this.http.get(`${this.userApiUrl}/${accountId}`)
+  }
+
+  updateProfile(userProfile){
+    return this.http.put(`${this.userApiUrl}/${userProfile.accountId}`, userProfile);
+  }
 }

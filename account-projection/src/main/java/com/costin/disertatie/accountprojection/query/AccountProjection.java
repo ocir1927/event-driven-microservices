@@ -2,9 +2,7 @@ package com.costin.disertatie.accountprojection.query;
 
 import com.costin.disertatie.api.entity.AccountDTO;
 import com.costin.disertatie.api.entity.Status;
-import com.costin.disertatie.api.event.AccountCreatedEvent;
-import com.costin.disertatie.api.event.AccountCreditedEvent;
-import com.costin.disertatie.api.event.AccountDebitedEvent;
+import com.costin.disertatie.api.event.*;
 import com.costin.disertatie.api.query.GetAllAccountsQuery;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
@@ -42,6 +40,17 @@ public class AccountProjection {
             return account;
         });
     }
+
+    @EventHandler
+    public void on(MoneyWithdrawedEvent event) {
+        accountRepository.findById(event.accountId).map(account -> {
+            account.setAccountBalance(account.getAccountBalance() - event.withdrawAmmount);
+            return account;
+        });
+    }
+
+
+
 
     @QueryHandler(queryName = "getAccount")
     public AccountDTO findOne(String accountId) {

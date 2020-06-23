@@ -5,11 +5,11 @@ package com.costin.disertatie.accountcommand.aggregates;
 import com.costin.disertatie.api.command.CreateAccountCommand;
 import com.costin.disertatie.api.command.CreditAccountCommand;
 import com.costin.disertatie.api.command.DebitAccountCommand;
+import com.costin.disertatie.api.command.WithdrawMoneyCommand;
 import com.costin.disertatie.api.entity.Status;
-import com.costin.disertatie.api.event.AccountCreatedEvent;
-import com.costin.disertatie.api.event.AccountCreditedEvent;
-import com.costin.disertatie.api.event.AccountDebitedEvent;
+import com.costin.disertatie.api.event.*;
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
@@ -75,5 +75,17 @@ public class AccountAggregate {
         this.accountBalance -= moneyDebitedEvent.debitAmount;
     }
 
+    @CommandHandler
+    protected void on(WithdrawMoneyCommand command){
+        if(this.accountBalance < command.withdrawAmmount){
+            throw new IllegalArgumentException("Not enough money to withdraw");
+        }
+        AggregateLifecycle.apply(new MoneyWithdrawedEvent(command.id, command.withdrawAmmount, command.bankAccount, command.ownerName));
+    }
+
+    @EventSourcingHandler
+    protected void handle(MoneyWithdrawedEvent event){
+        this.accountBalance -= event.withdrawAmmount;
+    }
 
 }

@@ -1,5 +1,5 @@
 package com.costin.disertatie.api.entity;
 
 public enum Status {
-    CREATED,SUSPENDED,ACTIVATED,PENDING,COMPLETE;
+    CREATED,SUSPENDED,ACTIVATED,PENDING,COMPLETE, CLOSED;
 }

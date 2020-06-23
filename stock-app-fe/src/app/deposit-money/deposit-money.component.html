@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Deposit money</h1>
+<div mat-dialog-content fxLayout="column">
+  <!-- <mat-form-field> -->
+  <!-- <div class="current-price">Current stock price: <b>{{tradeInfo.stockPrice | number :'1.1-2'}}$ /unit</b></div> -->
+  <!-- </mat-form-field> -->
+
+  <div class="col-md-8" >
+    <mat-form-field>
+      <input matInput [(ngModel)]="deposit" placeholder="How much money do you want to deposit?">
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+  <button mat-button [mat-dialog-close]="deposit">Deposit</button>
+</div>

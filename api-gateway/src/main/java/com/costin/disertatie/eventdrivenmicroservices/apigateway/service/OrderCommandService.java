@@ -1,6 +1,8 @@
 package com.costin.disertatie.eventdrivenmicroservices.apigateway.service;
 
+import com.costin.disertatie.api.command.CloseOrderCommamnd;
 import com.costin.disertatie.api.command.CreateNewOrderCommand;
+import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.CloseOrderDTO;
 import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.CreateOrderDTO;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.stereotype.Service;
@@ -19,5 +21,9 @@ public class OrderCommandService {
 
     public CompletableFuture<String> createOrder(CreateOrderDTO createOrderDTO) {
         return this.commandGateway.send(new CreateNewOrderCommand(UUID.randomUUID().toString(),createOrderDTO.getAccountId(),createOrderDTO.getStockId(),createOrderDTO.getValue(),createOrderDTO.getPrice()));
+    }
+
+    public CompletableFuture<Boolean> closeOrder(String orderId, CloseOrderDTO closeOrderDTO) {
+        return this.commandGateway.send(new CloseOrderCommamnd(orderId, closeOrderDTO.getInvested() + closeOrderDTO.getProfitLoss() ));
     }
 }

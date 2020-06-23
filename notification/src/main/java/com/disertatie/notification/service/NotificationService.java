@@ -9,7 +9,7 @@ import java.util.Properties;
 @Component
 public class NotificationService {
 
-    @EventHandler
+//    @EventHandler
     public void handle(UserAccountCreatedEvent event) {
         String to = event.email;
         String from = "stock.io@gmail.com";

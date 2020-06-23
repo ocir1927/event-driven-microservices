@@ -1,10 +1,12 @@
 package com.costin.disertatie.eventdrivenmicroservices.apigateway;
 
 import com.costin.disertatie.api.entity.OrderDTO;
+import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.CloseOrderDTO;
 import com.costin.disertatie.eventdrivenmicroservices.apigateway.dto.CreateOrderDTO;
 import com.costin.disertatie.eventdrivenmicroservices.apigateway.service.OrderCommandService;
 import com.costin.disertatie.eventdrivenmicroservices.apigateway.service.OrderQueryService;
 import io.swagger.annotations.Api;
+import org.axonframework.axonserver.connector.command.AxonServerRemoteCommandHandlingException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +28,14 @@ public class OrderController {
 
     @PostMapping(value = "new-order")
     public CompletableFuture<String> createOrder(@RequestBody CreateOrderDTO createOrderDTO){
-        return orderCommandService.createOrder(createOrderDTO);
+        try {
+            return orderCommandService.createOrder(createOrderDTO);
+        }catch (AxonServerRemoteCommandHandlingException ex){
+            CompletableFuture<String> err = new CompletableFuture<String>();
+            err.obtrudeValue(ex.toString());
+            return err;
+
+        }
     }
 
     @GetMapping
@@ -43,5 +52,18 @@ public class OrderController {
     public CompletableFuture<List<OrderDTO>> getOrdersForAccoubt(@PathVariable(value = "accountId") String accountId) {
         return orderQueryService.getOrdersForAccount(accountId);
     }
+
+    @GetMapping("/account/{accountId}/order-count")
+    public CompletableFuture<Integer> getOrdersCountForAccount(@PathVariable(value = "accountId") String accountId) {
+        return orderQueryService.getOrderCountForAccount(accountId);
+    }
+
+
+    @PutMapping("/close/{orderId}")
+    public CompletableFuture<Boolean> closeOrder(@PathVariable(value = "orderId") String orderId, @RequestBody CloseOrderDTO closeOrderDTO){
+        return orderCommandService.closeOrder(orderId, closeOrderDTO);
+    }
+
+
 
 }

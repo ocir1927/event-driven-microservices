@@ -1,7 +1,9 @@
 package com.costin.disertatie.accountcommand.aggregates;
 
 import com.costin.disertatie.api.command.CreateUserAccountCommand;
+import com.costin.disertatie.api.command.UpdateUserProfileCommand;
 import com.costin.disertatie.api.event.UserAccountCreatedEvent;
+import com.costin.disertatie.api.event.UserAccountUpdatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -27,15 +29,15 @@ public class UserAccountAggregate {
 
     private String email;
 
-    private String description;
-
-    public UserAccountAggregate() {
-    }
-
     @CommandHandler
     public UserAccountAggregate(CreateUserAccountCommand event) {
         LOG.info("Create user account command");
         AggregateLifecycle.apply(new UserAccountCreatedEvent(event.username, event.password, event.accountId, event.name, event.email, event.description));
+    }
+
+    private String description;
+
+    public UserAccountAggregate() {
     }
 
     @EventSourcingHandler
@@ -48,6 +50,18 @@ public class UserAccountAggregate {
         this.email = event.email;
         this.description = event.description;
         LOG.info("User account created for username: " + this.username);
+    }
+
+    @CommandHandler
+    public void handle(UpdateUserProfileCommand command){
+        AggregateLifecycle.apply(new UserAccountUpdatedEvent(command.username,command.name, command.email, command.description));
+    }
+
+    @EventSourcingHandler
+    public void on(UserAccountUpdatedEvent event){
+        this.email = event.email;
+        this.description = event.description;
+        this.name = event.name;
     }
 
 }

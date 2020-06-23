@@ -8,6 +8,8 @@ import { Injectable } from '@angular/core';
 // declare $: any;
 
 export class NotificationService {
+
+  
   notificationTypes = ['','info','success','warning','danger'];
 
 
